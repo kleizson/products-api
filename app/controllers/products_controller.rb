@@ -80,6 +80,34 @@ class ProductsController < ApplicationController
 
     end
 
+    def update
+
+        @product = Product.find(params[:id]) if Product.exists?(params[:id])
+
+        if @product
+
+            @product.update_attributes(product_params)
+
+            render json: {
+                message: "Produto Atualizado com sucesso!",
+                produto: @product
+            },
+            status: :ok
+
+        else
+            
+            render json: {
+                error:{
+                    message: "Produto não encontrado!"
+                }
+            },
+            status: :bad_request
+
+        end
+    
+    end
+
+
     
     private
 
