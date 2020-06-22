@@ -107,6 +107,29 @@ class ProductsController < ApplicationController
     
     end
 
+    def destroy
+
+        @product = Product.find(params[:id]) if Product.exists?(params[:id])
+
+        if @product
+            
+            @product.destroy
+        
+            render json: {
+                message: "Produto Deletado com sucesso!"
+            },
+            status: :ok
+        else
+
+            render json: {
+                error:{
+                    message: "Produto não encontrado!"
+                }
+            },
+            status: :bad_request
+
+        end
+    end
 
     
     private
