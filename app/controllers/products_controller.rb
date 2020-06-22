@@ -56,6 +56,30 @@ class ProductsController < ApplicationController
         
     end
 
+    def show
+
+        @product = Product.find(params[:id]) if Product.exists?(params[:id])
+
+        if @product
+
+            render json: {
+                produto: @product
+            },
+        status: :ok
+
+        else
+
+            render json: {
+                error:{
+                    message: "Produto não encontrado!"
+                }
+            },
+            status: :bad_request
+
+        end
+
+    end
+
     
     private
 
