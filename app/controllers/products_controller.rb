@@ -20,6 +20,8 @@ class ProductsController < ApplicationController
 
     def create
 
+        p params[:name]
+
         unless (params.has_key?(:name) && params.has_key?(:price) && params.has_key?(:description))
             
             return render json: {
@@ -40,7 +42,7 @@ class ProductsController < ApplicationController
                 message: "Produto cadastrado com sucesso!",
                 produto: @product
             },
-            status: :ok
+            status: :created
 
         else
 
@@ -86,7 +88,16 @@ class ProductsController < ApplicationController
 
         if @product
 
-            @product.update_attributes(product_params)
+            unless (params.has_key?(:name) || params.has_key?(:price) || params.has_key?(:description))
+            
+                return render json: {
+                    message: "O produto não foi alterado, não foi passado nenhum valor para alteração."
+                },
+                status: :ok
+            
+            end
+
+            @product.update(product_params)
 
             render json: {
                 message: "Produto Atualizado com sucesso!",
